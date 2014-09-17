@@ -1,0 +1,16 @@
+# https://gist.github.com/1808418
+# Use the config/mongoid/#{rails_env}.yml file for mongoid config
+namespace :mongoid do
+  task :index do
+    on roles(:db) do
+      within current_path do
+        with rails_env: :production do
+          execute :rake, "db:mongoid:create_indexes"
+        end
+      end
+    end
+  end
+end
+# namespace :deploy do
+#   after :migrate, "mongoid:index"
+# end

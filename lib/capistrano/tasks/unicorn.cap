@@ -1,0 +1,6 @@
+namespace :unicorn do
+  desc 'unicorn hot restart'
+  task :restart do
+
+  end
+end

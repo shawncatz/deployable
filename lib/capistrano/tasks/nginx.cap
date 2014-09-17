@@ -1,0 +1,8 @@
+namespace :nginx do
+  desc 'nginx hot restart'
+  task :reload do
+    on roles(:app) do
+      sudo "service nginx reload"
+    end
+  end
+end

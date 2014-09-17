@@ -1,0 +1,29 @@
+namespace :database do
+  task :backup do
+    on roles(:app) do
+      within current_path do
+        with rails_env: :production do
+          rake "db:backup"
+        end
+      end
+    end
+  end
+  #task :pull do
+  #  app = fetch(:application)
+  #  time = nil
+  #  on roles(:app) do
+  #    within "/srv/apps/db/#{app}" do
+  #      time = capture 'ls -tr | tail -1'
+  #    end
+  #  end
+  #  run_locally do
+  #    execute <<-CMD
+  #      scp shawn@#{host}:#{file} . && \
+  #      tar xvfz #{time}.tgz && \
+  #      rm -rf #{time}.tgz && \
+  #      rake db:drop && \
+  #      mongorestore -d #{app}_development #{time}/#{app}_production
+  #    CMD
+  #  end
+  #end
+end
