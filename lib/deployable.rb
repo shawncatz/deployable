@@ -1,4 +1,2 @@
 require 'deployable/version'
-
-module Deployable
-end
+require 'deployable/engine' if defined?(Rails)

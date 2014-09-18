@@ -1,8 +1,18 @@
 namespace :nginx do
-  desc 'nginx hot restart'
+  desc 'DEPLOYABLE: nginx hot restart'
   task :reload do
     on roles(:app) do
       sudo "service nginx reload"
+    end
+  end
+
+  desc "DEPLOYABLE: install nginx site to /srv/nginx"
+  task :site do
+    on roles(:app) do
+      within current_path do
+        app = fetch(:application)
+        sudo "rm /srv/sites/#{app} && ln -s `pwd`/config/webserver/nginx.conf /srv/sites/#{app}"
+      end
     end
   end
 end

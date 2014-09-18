@@ -1,4 +1,5 @@
 namespace :database do
+  desc "DEPLOYABLE: run db:backup"
   task :backup do
     on roles(:app) do
       within current_path do

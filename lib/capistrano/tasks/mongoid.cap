@@ -1,6 +1,7 @@
 # https://gist.github.com/1808418
 # Use the config/mongoid/#{rails_env}.yml file for mongoid config
 namespace :mongoid do
+  desc "DEPLOYABLE: generate / update mongodb indices"
   task :index do
     on roles(:db) do
       within current_path do

@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency "rails", "~> 0.75.0"
-  s.add_dependency "foreman", "~> 3.2.1"
+  s.add_dependency "rails", "~> 4.1.6"
+  s.add_dependency "foreman", "~> 0.75.0"
   s.add_dependency "capistrano", "~> 3.2.1"
   s.add_dependency "capistrano-bundler", "~> 1.1.3"
   s.add_dependency "capistrano-rails", "~> 1.1.2"

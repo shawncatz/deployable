@@ -1,5 +1,5 @@
 namespace :unicorn do
-  desc 'unicorn hot restart'
+  desc 'DEPLOYABLE: unicorn hot restart (not working right now)'
   task :restart do
 
   end
