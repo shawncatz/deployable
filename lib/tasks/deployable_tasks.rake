@@ -4,7 +4,7 @@ Dotenv.load
 namespace :db do
   desc "DEPLOYABLE: backup using mongodump"
   task :backup => :environment do
-    app = ENV['APP'] || raise("APP not set")
+    app = ENV['APP'] || raise("APP not set, add to .env")
     db = "#{app}_#{Rails.env}"
     time = Time.now.strftime("%Y%m%d-%H%M%S")
     dir = "/srv/apps/db/#{app}/#{time}"
@@ -15,7 +15,7 @@ namespace :db do
   desc "DEPLOYABLE: pull db backup from server, specify timestamp as argument"
   task :pull, [:host] => :environment do |_, args|
     #TODO: FIX THIS
-    app = ENV['APP'] || raise("APP not set")
+    app = ENV['APP'] || raise("APP not set, add to .env")
     host = args.host || "kagero"
     time = nil
 
