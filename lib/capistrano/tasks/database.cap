@@ -30,6 +30,7 @@ namespace :database do
     run_locally do
       execute <<-CMD
          rake db:drop && \
+         rake cache:clear && \
          cd #{working} && \
          tar xvfz #{time}.tgz && \
          mongorestore -d #{app}_development #{time}/#{app}_production && \
