@@ -9,6 +9,35 @@ namespace :database do
       end
     end
   end
+
+  desc "DEPLOYABLE: run db:backup and pull database dump"
+  task :pull do
+    app = fetch(:application)
+    time = nil
+    working = nil
+    remote = nil
+    dir = "/srv/apps/db/#{app}"
+    invoke('database:backup')
+    on roles(:app) do
+      time = capture "cd #{dir} && ls -tr | tail -1"
+      time.gsub!(/\.tgz$/, '')
+      info "TIME: #{time}"
+      remote = "#{dir}/#{time}.tgz"
+      working = "/tmp/#{app}-db-#{time}"
+      FileUtils.mkdir_p(working)
+      download! remote, "#{working}/#{time}.tgz"
+    end
+    run_locally do
+      execute <<-CMD
+         rake db:drop && \
+         cd #{working} && \
+         tar xvfz #{time}.tgz && \
+         mongorestore -d #{app}_development #{time}/#{app}_production && \
+         cd /tmp && rm -rf #{working}
+      CMD
+    end
+  end
+
   #task :pull do
   #  app = fetch(:application)
   #  time = nil

@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency "capistrano-rails-console", "~> 0.2.0"
   s.add_dependency "capistrano-rvm", "~> 0.1.1"
   s.add_dependency "whenever", "~> 0.9.2"
+  s.add_dependency 'airbrussh'
 
   s.add_development_dependency "sqlite3"
 end

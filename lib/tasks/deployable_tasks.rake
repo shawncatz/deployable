@@ -16,12 +16,12 @@ namespace :db do
   task :pull, [:host] => :environment do |_, args|
     #TODO: FIX THIS
     app = ENV['APP'] || raise("APP not set, add to .env")
-    host = args.host || "kagero"
+    host = args.host || "kimon"
     time = nil
 
     unless time
       puts "running 'cap database:backup'..."
-      output = %x{cap database:backup 2>&1}
+      output = %x{cap #{host} database:backup 2>&1}
       #puts "output: #{output}"
       output.match(/backed up: ([\d-]+)/) do |m|
         time = m[1]
