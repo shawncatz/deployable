@@ -19,13 +19,13 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 4.1.6"
   s.add_dependency "foreman", "~> 0.75.0"
-  s.add_dependency "capistrano", "~> 3.2.1"
+  s.add_dependency "capistrano", "~> 3.4.0"
   s.add_dependency "capistrano-bundler", "~> 1.1.3"
   s.add_dependency "capistrano-rails", "~> 1.1.2"
   s.add_dependency "capistrano-rails-console", "~> 0.2.0"
   s.add_dependency "capistrano-rvm", "~> 0.1.1"
   s.add_dependency "whenever", "~> 0.9.2"
-  s.add_dependency 'airbrussh'
+  s.add_dependency 'airbrussh', '0.8.0'
 
   s.add_development_dependency "sqlite3"
 end

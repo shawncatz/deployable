@@ -10,14 +10,13 @@ namespace :database do
     end
   end
 
-  desc "DEPLOYABLE: run db:backup and pull database dump"
-  task :pull do
+  desc 'DEPLOYABLE: download most recent backup'
+  task :download do
     app = fetch(:application)
     time = nil
     working = nil
     remote = nil
     dir = "/srv/apps/db/#{app}"
-    invoke('database:backup')
     on roles(:app) do
       time = capture "cd #{dir} && ls -tr | tail -1"
       time.gsub!(/\.tgz$/, '')
@@ -28,15 +27,25 @@ namespace :database do
       download! remote, "#{working}/#{time}.tgz"
     end
     run_locally do
-      execute <<-CMD
-         rake db:drop && \
-         rake cache:clear && \
-         cd #{working} && \
-         tar xvfz #{time}.tgz && \
-         mongorestore -d #{app}_development #{time}/#{app}_production && \
-         cd /tmp && rm -rf #{working}
-      CMD
+      cmd = "rake db:drop"
+      cmd << " && "
+      cmd << "rake cache:clear"
+      cmd << " && "
+      cmd << "cd #{working}"
+      cmd << " && "
+      cmd << "tar xvfz #{time}.tgz"
+      cmd << " && "
+      cmd << "mongorestore -d #{app}_development #{time}/#{app}_production"
+      cmd << " && "
+      cmd << "cd /tmp && rm -rf #{working}"
+      execute cmd
     end
+  end
+
+  desc 'DEPLOYABLE: run db:backup and pull database dump'
+  task :pull do
+    invoke('database:backup')
+    invoke('database:download')
   end
 
   #task :pull do
