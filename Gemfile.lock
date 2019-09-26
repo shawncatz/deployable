@@ -1,12 +1,13 @@
 PATH
   remote: .
   specs:
-    deployable (0.1.0)
+    deployable (0.1.1)
       capistrano (~> 3.11.1)
       capistrano-bundler (~> 1.6.0)
       capistrano-rails (~> 1.4.0)
       capistrano-rails-console (~> 2.3.0)
       capistrano-rvm (~> 0.1.1)
+      ed25519
       foreman (~> 0.75.0)
       rails (~> 4.1.6)
       whenever (~> 0.9.2)
@@ -65,6 +66,7 @@ GEM
     dotenv (0.11.1)
       dotenv-deployment (~> 0.0.2)
     dotenv-deployment (0.0.2)
+    ed25519 (1.2.4)
     erubis (2.7.0)
     foreman (0.75.0)
       dotenv (~> 0.11.1)
