@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    deployable (0.2.2)
+    deployable (0.2.3)
       bcrypt_pbkdf
       capistrano (~> 3.11.1)
       capistrano-bundler (~> 1.6.0)

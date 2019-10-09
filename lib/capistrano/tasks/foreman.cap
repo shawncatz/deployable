@@ -30,7 +30,7 @@ namespace :foreman do
       foreman_sudo        = fetch(:foreman_sudo)
       foreman_user        = fetch(:foreman_user, host.user)
 
-      cmd = [:bundle, 'exec', "rvmsudo", foreman_cmd, 'export',  foreman_format, foreman_location]
+      cmd = [:bundle, 'exec', "rvmsudo", foreman_cmd, 'export', foreman_format, foreman_location]
       # cmd = [foreman_cmd.to_sym, 'export',  foreman_format, foreman_location]
       cmd << %Q(-f #{fetch(:foreman_procfile)})
       cmd << %Q(-p #{fetch(:foreman_port)})
@@ -56,33 +56,66 @@ namespace :foreman do
     end
   end
 
-  desc 'DEPLOYABLE: restart app'
-  task :restart do
-    on roles(:app) do
-      within release_path do
-        app = fetch(:application)
-        cmd = "sudo service #{app} start || sudo service #{app} stop && sudo service #{app} start"
-        execute cmd
+  if fetch(:foreman_format) == 'systemd'
+    desc 'DEPLOYABLE: restart app'
+    task :start do
+      on roles fetch(:foreman_systemd_roles) do
+        as "root" do
+          execute :systemctl, "restart #{fetch(:application)}.target"
+        end
+      end
+    end
+  else
+    desc 'DEPLOYABLE: restart app'
+    task :restart do
+      on roles(:app) do
+        within release_path do
+          app = fetch(:application)
+          cmd = "sudo service #{app} start || sudo service #{app} stop && sudo service #{app} start"
+          execute cmd
+        end
       end
     end
   end
 
-  desc 'DEPLOYABLE: start app'
-  task :start do
-    on roles(:app) do
-      within release_path do
-        app = fetch(:application)
-        execute "sudo service #{app} start"
+  if fetch(:foreman_format) == 'systemd'
+    desc 'DEPLOYABLE: start app'
+    task :start do
+      on roles fetch(:foreman_systemd_roles) do
+        as "root" do
+          execute :systemctl, "start #{fetch(:application)}.target"
+        end
+      end
+    end
+  else
+    desc 'DEPLOYABLE: start app'
+    task :start do
+      on roles(:app) do
+        within release_path do
+          app = fetch(:application)
+          execute "sudo service #{app} start"
+        end
       end
     end
   end
 
-  desc 'DEPLOYABLE: stop app'
-  task :stop do
-    on roles(:app) do
-      within release_path do
-        app = fetch(:application)
-        execute "sudo service #{app} stop"
+  if fetch(:foreman_format) == 'systemd'
+    desc 'DEPLOYABLE: stop app'
+    task :start do
+      on roles fetch(:foreman_systemd_roles) do
+        as "root" do
+          execute :systemctl, "stop #{fetch(:application)}.target"
+        end
+      end
+    end
+  else
+    desc 'DEPLOYABLE: stop app'
+    task :stop do
+      on roles(:app) do
+        within release_path do
+          app = fetch(:application)
+          execute "sudo service #{app} stop"
+        end
       end
     end
   end
@@ -94,19 +127,19 @@ end
 
 namespace :load do
   task :defaults do
-    set :foreman_cmd,          :foreman
-    set :foreman_format,       "upstart"
-    set :foreman_location,     "/etc/init"
-    set :foreman_port,         5000
-    set :foreman_root,         -> { release_path }
-    set :foreman_procfile,     -> { release_path.join('Procfile') }
-    set :foreman_app,          -> { fetch(:application) }
-    set :foreman_log,          -> { shared_path.join('log') }
-    set :foreman_pids,         false
-    set :foreman_concurrency,  false
-    set :foreman_sudo,         false
-    set :foreman_roles,        :all
-    set :foreman_servers,      -> { release_roles(fetch(:foreman_roles)) }
+    set :foreman_cmd, :foreman
+    set :foreman_format, "upstart"
+    set :foreman_location, "/etc/init"
+    set :foreman_port, 5000
+    set :foreman_root, -> { release_path }
+    set :foreman_procfile, -> { release_path.join('Procfile') }
+    set :foreman_app, -> { fetch(:application) }
+    set :foreman_log, -> { shared_path.join('log') }
+    set :foreman_pids, false
+    set :foreman_concurrency, false
+    set :foreman_sudo, false
+    set :foreman_roles, :all
+    set :foreman_servers, -> { release_roles(fetch(:foreman_roles)) }
   end
 end
 
