@@ -56,18 +56,15 @@ namespace :foreman do
     end
   end
 
-  if fetch(:foreman_format) == 'systemd'
-    desc 'DEPLOYABLE: restart app'
-    task :start do
+  desc 'DEPLOYABLE: restart app'
+  task :start do
+    if fetch(:foreman_format) == 'systemd'
       on roles fetch(:foreman_systemd_roles) do
         as "root" do
           execute :systemctl, "restart #{fetch(:application)}.target"
         end
       end
-    end
-  else
-    desc 'DEPLOYABLE: restart app'
-    task :restart do
+    else
       on roles(:app) do
         within release_path do
           app = fetch(:application)
@@ -78,18 +75,15 @@ namespace :foreman do
     end
   end
 
-  if fetch(:foreman_format) == 'systemd'
-    desc 'DEPLOYABLE: start app'
-    task :start do
+  desc 'DEPLOYABLE: start app'
+  task :start do
+    if fetch(:foreman_format) == 'systemd'
       on roles fetch(:foreman_systemd_roles) do
         as "root" do
           execute :systemctl, "start #{fetch(:application)}.target"
         end
       end
-    end
-  else
-    desc 'DEPLOYABLE: start app'
-    task :start do
+    else
       on roles(:app) do
         within release_path do
           app = fetch(:application)
@@ -99,18 +93,15 @@ namespace :foreman do
     end
   end
 
-  if fetch(:foreman_format) == 'systemd'
-    desc 'DEPLOYABLE: stop app'
-    task :start do
+  desc 'DEPLOYABLE: stop app'
+  task :start do
+    if fetch(:foreman_format) == 'systemd'
       on roles fetch(:foreman_systemd_roles) do
         as "root" do
           execute :systemctl, "stop #{fetch(:application)}.target"
         end
       end
-    end
-  else
-    desc 'DEPLOYABLE: stop app'
-    task :stop do
+    else
       on roles(:app) do
         within release_path do
           app = fetch(:application)
@@ -119,31 +110,30 @@ namespace :foreman do
       end
     end
   end
-end
 
-Capistrano::DSL.stages.each do |stage|
-  after stage, 'foreman:configure_sudo'
-end
-
-namespace :load do
-  task :defaults do
-    set :foreman_cmd, :foreman
-    set :foreman_format, "upstart"
-    set :foreman_location, "/etc/init"
-    set :foreman_port, 5000
-    set :foreman_root, -> { release_path }
-    set :foreman_procfile, -> { release_path.join('Procfile') }
-    set :foreman_app, -> { fetch(:application) }
-    set :foreman_log, -> { shared_path.join('log') }
-    set :foreman_pids, false
-    set :foreman_concurrency, false
-    set :foreman_sudo, false
-    set :foreman_roles, :all
-    set :foreman_servers, -> { release_roles(fetch(:foreman_roles)) }
+  Capistrano::DSL.stages.each do |stage|
+    after stage, 'foreman:configure_sudo'
   end
-end
 
-namespace :deploy do
-  #after :updated, 'foreman:export'
-  after :restart, 'foreman:restart'
-end
+  namespace :load do
+    task :defaults do
+      set :foreman_cmd, :foreman
+      set :foreman_format, "upstart"
+      set :foreman_location, "/etc/init"
+      set :foreman_port, 5000
+      set :foreman_root, -> { release_path }
+      set :foreman_procfile, -> { release_path.join('Procfile') }
+      set :foreman_app, -> { fetch(:application) }
+      set :foreman_log, -> { shared_path.join('log') }
+      set :foreman_pids, false
+      set :foreman_concurrency, false
+      set :foreman_sudo, false
+      set :foreman_roles, :all
+      set :foreman_servers, -> { release_roles(fetch(:foreman_roles)) }
+    end
+  end
+
+  namespace :deploy do
+    #after :updated, 'foreman:export'
+    after :restart, 'foreman:restart'
+  end
