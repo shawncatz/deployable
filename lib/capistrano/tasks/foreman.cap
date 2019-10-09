@@ -57,7 +57,7 @@ namespace :foreman do
   end
 
   desc 'DEPLOYABLE: restart app'
-  task :start do
+  task :restart do
     if fetch(:foreman_format) == 'systemd'
       on roles fetch(:foreman_systemd_roles) do
         as "root" do
@@ -94,7 +94,7 @@ namespace :foreman do
   end
 
   desc 'DEPLOYABLE: stop app'
-  task :start do
+  task :stop do
     if fetch(:foreman_format) == 'systemd'
       on roles fetch(:foreman_systemd_roles) do
         as "root" do
