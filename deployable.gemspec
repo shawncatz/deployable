@@ -22,6 +22,8 @@ Gem::Specification.new do |s|
   s.add_dependency "capistrano", "~> 3.11.1"
   s.add_dependency 'dotenv', '~> 2.7.5'
   s.add_dependency 'ed25519', '~> 1.2.4'
+  s.add_dependency 'rbnacl'
+  s.add_dependency 'rbnacl-libsodium'
   s.add_dependency 'bcrypt_pbkdf'
   s.add_dependency "capistrano-bundler", "~> 1.6.0"
   s.add_dependency "capistrano-rails", "~> 1.4.0"
