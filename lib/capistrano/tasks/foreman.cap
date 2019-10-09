@@ -137,3 +137,4 @@ namespace :foreman do
     #after :updated, 'foreman:export'
     after :restart, 'foreman:restart'
   end
+end
