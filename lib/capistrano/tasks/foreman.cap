@@ -39,7 +39,7 @@ namespace :foreman do
       cmd << %Q(-u #{foreman_user})
       cmd << %Q(-l #{fetch(:foreman_log)})
       cmd << %Q(-r #{foreman_pids}) if foreman_pids
-      cmd << %Q(-c #{foreman_concurrency}) if foreman_concurrency
+      # cmd << %Q(-c #{foreman_concurrency}) if foreman_concurrency
       # puts "CMD:#{cmd.inspect}"
       command = SSHKit::Command.new(*cmd).to_s
       puts "Command: #{command}"
@@ -133,8 +133,9 @@ namespace :foreman do
     end
   end
 
-  namespace :deploy do
-    #after :updated, 'foreman:export'
-    after :restart, 'foreman:restart'
-  end
+  after 'deploy:restart', 'foreman:restart'
+  # namespace :deploy do
+  #   after :updated, 'foreman:export'
+    # after :restart, 'foreman:restart'
+  # end
 end
