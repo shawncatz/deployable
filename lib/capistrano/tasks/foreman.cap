@@ -59,16 +59,14 @@ namespace :foreman do
   desc 'DEPLOYABLE: restart app'
   task :restart do
     if fetch(:foreman_format) == 'systemd'
-      on roles fetch(:foreman_systemd_roles) do
+      on roles(:app) do
         as "root" do
-          info "foreman:restart:systemd"
           execute :systemctl, "restart #{fetch(:application)}.target"
         end
       end
     else
       on roles(:app) do
         within release_path do
-          info "foreman:restart:daemon"
           app = fetch(:application)
           cmd = "sudo service #{app} start || sudo service #{app} stop && sudo service #{app} start"
           execute cmd
