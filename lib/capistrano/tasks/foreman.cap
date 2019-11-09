@@ -134,8 +134,4 @@ namespace :foreman do
   end
 
   after 'deploy:restart', 'foreman:restart'
-  # namespace :deploy do
-  #   after :updated, 'foreman:export'
-    # after :restart, 'foreman:restart'
-  # end
 end
