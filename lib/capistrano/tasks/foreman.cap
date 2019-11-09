@@ -135,5 +135,5 @@ namespace :foreman do
     end
   end
 
-  after 'deploy:restart', 'foreman:restart'
+  after 'deploy:publishing', 'foreman:restart'
 end
