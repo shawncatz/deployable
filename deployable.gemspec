@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 4.2.11.1"
-  s.add_dependency "foreman", "~> 0.85.0"
+  s.add_dependency "foreman", "~> 0.87.0"
   s.add_dependency "capistrano", "~> 3.11.1"
   s.add_dependency 'dotenv', '~> 2.7.5'
   s.add_dependency 'ed25519', '~> 1.2.4'
